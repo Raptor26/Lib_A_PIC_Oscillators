@@ -38,9 +38,9 @@
 /**
  *  @brief  Функция конфигурирует тактовый генератор микроконтроллера со следующими 
  *          параметрами:
- *              HS - 8MHz (веншний тактовый генератор как источник импульсов);
- *              FOSC - 64MHz;
- *              FCY - 32MIPS;
+ *              HS - 8 MHz (веншний тактовый генератор как источник импульсов);
+ *              FOSC - 64 MHz;
+ *              FCY - 32 MIPS;
  */
 void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void)
 {
@@ -103,12 +103,52 @@ void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void)
 
 //------------------------------------------------------------------------------
 // Функции для микроконтроллера серии "dsPIC33E"
-#if defined (__dsPIC33E__) 
+#if defined (__dsPIC33E__)
 
-void PIC_Init_Oscillator_(void)
-{
+/**
+ *	@brief	Функция конфигурирует тактовый генератор микроконтроллера со следующими
+ *			параметрами:
+ *				FRC - 7.23 MHz (вунтренняя RC цепочка как источник импульсов);
+ *				Подстройка FRC до 8,0056625 MHz
+ *				FOSC - 64 MHz;
+ *              FCY - 64 MIPS;
+ */
+void PIC_Init_Oscillator_RC_8MHz_FOSC_64MHz_FCY_64MHz(void)
+	//--------------------------------------------------------------------------
+    /* CLKDIV: Clock Divisor Register */
 
-}
+    // Recover on Interrupt bit
+    CLKDIVbits.ROI = 0; //              Interrupts have no effect on the DOZEN bit
+
+    // Processor Clock Reduction Select bits
+    CLKDIVbits.DOZE = 0b000; //         FCY divided by 1
+
+    // Doze Mode Enable bit
+    CLKDIVbits.DOZEN = 0; //            Processor clock and peripheral clock ratio are forced to 1:1
+
+    // Internal Fast RC Oscillator Postscaler bits
+    CLKDIVbits.FRCDIV = 0b000; //       FRC divided by 1 (default)
+
+    // PLL VCO Output Divider Select bits (also denoted as СN2Т, PLL postscaler)
+    CLKDIVbits.PLLPOST = 0b00; //       Output divided by 2
+
+    // PLL Phase Detector Input Divider Select bits (also denoted as СN1Т, PLL prescaler)
+    CLKDIVbits.PLLPRE = 0b00000; //     Input divided by 2 (default)
+    
+    // PLLFBD: PLL Feedback Divisor Register
+    PLLFBDbits.PLLDIV = 62; //          PLL Feedback Divisor bits (also denoted as СMТ, PLL multiplier)
+    
+    // OSCTUN: FRC OSCILLATOR TUNING REGISTER
+    OSCTUNbits.TUN = 23; //             FRC Oscillator Tuning bits
+    //                                  Подстройка FRC до 8,0056625 MHz
+    //--------------------------------------------------------------------------
+
+    
+    // LOCK: PLL Lock Status bit (read-only)
+    while (OSCCONbits.LOCK != 1); //    1 = Indicates that PLL is in lock or PLL start-up timer is satisfied
+    //                                  0 = Indicates that PLL is out of lock, start-up timer is in progress or PLL is disabled
+                          
+    RCONbits.SWDTEN = 0; //             Отключаем сторожевой таймер
 #endif
 //------------------------------------------------------------------------------
 //==============================================================================
