@@ -110,7 +110,7 @@ void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void)
  *          параметрами:
  *              FRC - 7.23 MHz (вунтренняя RC цепочка как источник импульсов);
  *		Подстройка FRC до 8,0056625 MHz
- *		FOSC - 64 MHz;
+ *		FOSC - 128 MHz;
  *              FCY - 64 MIPS;
  */
 void PIC_Init_Oscillator_FRC_8MHz_FOSC_128MHz_FCY_64MIPS(void)
