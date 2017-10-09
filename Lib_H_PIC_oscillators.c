@@ -113,7 +113,7 @@ void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void)
  *		FOSC - 64 MHz;
  *              FCY - 64 MIPS;
  */
-void PIC_Init_Oscillator_RC_8MHz_FOSC_64MHz_FCY_64MIPS(void)
+void PIC_Init_Oscillator_FRC_8MHz_FOSC_128MHz_FCY_64MIPS(void)
 {
     //--------------------------------------------------------------------------
     /* CLKDIV: Clock Divisor Register */
