@@ -36,7 +36,7 @@
 //  Прототипы функция для микроконтроллера серии "PIC24H"
 #if defined (__PIC24H__)
 extern void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void);
-#endif
+#endif //   (__PIC24H__)
 //------------------------------------------------------------------------------
 
 
@@ -44,7 +44,7 @@ extern void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void);
 //  Прототипы функция для микроконтроллера серии "PIC24E"
 #if defined (__PIC24E_)
 
-#endif
+#endif //   (__PIC24E_)
 //------------------------------------------------------------------------------
 
 
@@ -52,7 +52,7 @@ extern void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void);
 //  Прототипы функция для микроконтроллера серии  "dsPIC33E"
 #if defined (__dsPIC33E__) 
 extern void PIC_Init_Oscillator_FRC_8MHz_FOSC_128MHz_FCY_64MIPS(void);
-#endif
+#endif //   (__dsPIC33E__)
 //------------------------------------------------------------------------------
 //******************************************************************************
 
