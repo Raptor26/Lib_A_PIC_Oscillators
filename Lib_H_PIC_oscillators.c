@@ -114,7 +114,8 @@ void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void)
  *              FCY - 64 MIPS;
  */
 void PIC_Init_Oscillator_RC_8MHz_FOSC_64MHz_FCY_64MIPS(void)
-	//--------------------------------------------------------------------------
+{
+    //--------------------------------------------------------------------------
     /* CLKDIV: Clock Divisor Register */
 
     //  Recover on Interrupt bit
@@ -134,21 +135,22 @@ void PIC_Init_Oscillator_RC_8MHz_FOSC_64MHz_FCY_64MIPS(void)
 
     //  PLL Phase Detector Input Divider Select bits (also denoted as СN1Т, PLL prescaler)
     CLKDIVbits.PLLPRE = 0b00000; //     Input divided by 2 (default)
-    
+
     //  PLLFBD: PLL Feedback Divisor Register
     PLLFBDbits.PLLDIV = 62; //          PLL Feedback Divisor bits (also denoted as СMТ, PLL multiplier)
-    
+
     //  OSCTUN: FRC OSCILLATOR TUNING REGISTER
     OSCTUNbits.TUN = 23; //             FRC Oscillator Tuning bits
     //                                  Подстройка FRC до 8,0056625 MHz
     //--------------------------------------------------------------------------
 
-    
+
     // LOCK: PLL Lock Status bit (read-only)
     while (OSCCONbits.LOCK != 1); //    1 = Indicates that PLL is in lock or PLL start-up timer is satisfied
     //                                  0 = Indicates that PLL is out of lock, start-up timer is in progress or PLL is disabled
-                          
+
     RCONbits.SWDTEN = 0; //             Отключаем сторожевой таймер
+}
 #endif
 //------------------------------------------------------------------------------
 //==============================================================================
