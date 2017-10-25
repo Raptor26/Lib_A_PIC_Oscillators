@@ -52,6 +52,7 @@ extern void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void);
 //  Прототипы функция для микроконтроллера серии  "dsPIC33E"
 #if defined (__dsPIC33E__) 
 extern void PIC_Init_Oscillator_FRC_8MHz_FOSC_128MHz_FCY_64MIPS(void);
+extern void PIC_Init_Oscillator_HS_16MHz_FOSC_128MHz_FCY_40MIPS(void);
 #endif //   (__dsPIC33E__)
 //------------------------------------------------------------------------------
 //******************************************************************************
