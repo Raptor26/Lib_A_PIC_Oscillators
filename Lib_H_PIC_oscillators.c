@@ -151,6 +151,50 @@ void PIC_Init_Oscillator_FRC_8MHz_FOSC_128MHz_FCY_64MIPS(void)
 
     RCONbits.SWDTEN = 0; //             Отключаем сторожевой таймер
 }
+
+/**
+ *  @brief  Функция конфигурирует тактовый генератор микроконтроллера со следующими
+ *          параметрами:
+ *              HS - 16 MHz (внешний кварцевый генератор)
+ *		FOSC - 80 MHz;
+ *              FCY - 40 MIPS;
+ */
+void PIC_Init_Oscillator_HS_16MHz_FOSC_80MHz_FCY_40MIPS(void)
+{
+    //  Recover on Interrupt bit
+    CLKDIVbits.ROI = 0; //              Interrupts have no effect on the DOZEN bit
+    
+    //  Processor Clock Reduction Select bits
+    CLKDIVbits.DOZE = 0b000; //         FCY divided by 1
+    
+    //  Doze Mode Enable bit
+    CLKDIVbits.DOZEN = 0; //            Processor clock and peripheral clock ratio are forced to 1:1
+    
+    //  PLL VCO Output Divider Select bits (also denoted as СN2Т, PLL postscaler)
+    CLKDIVbits.PLLPOST = 0b00; //       Output divided by 2
+
+    //  PLL Phase Detector Input Divider Select bits (also denoted as СN1Т, PLL prescaler)
+    CLKDIVbits.PLLPRE = 0b00000; //     Input divided by 2 (default)
+
+    //  PLLFBD: PLL Feedback Divisor Register
+    PLLFBDbits.PLLDIV = 18; //          PLL Feedback Divisor bits (also denoted as СMТ, PLL multiplier)
+
+    //настройка источника тактирования
+    //__builtin_write_OSCCONH(0x03);
+    //__builtin_write_OSCCONL(0x01);    
+    OSCCONbits.NOSC = 0x03;//выбор источика тактирования - Primary Oscillator (POSC) with PLL (XTPLL, HSPLL, ECPLL)
+    OSCCONbits.OSWEN = 0x1;//задействовать биты NOSC<2:0>
+
+    // Wait for Clock switch to occur
+    while(OSCCONbits.COSC != 0x03) {};
+
+    // Wait for PLL to lock
+    while(OSCCONbits.LOCK != 1) {};
+
+    // Disable Watch Dog Timer
+    RCONbits.SWDTEN = 0;
+}
+
 #endif //   (__dsPIC33E__)
 //------------------------------------------------------------------------------
 //==============================================================================
