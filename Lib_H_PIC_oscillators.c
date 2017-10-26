@@ -156,10 +156,10 @@ void PIC_Init_Oscillator_FRC_8MHz_FOSC_128MHz_FCY_64MIPS(void)
  *  @brief  Функция конфигурирует тактовый генератор микроконтроллера со следующими
  *          параметрами:
  *              HS - 16 MHz (внешний кварцевый генератор)
- *		FOSC - 128 MHz;
+ *		FOSC - 80 MHz;
  *              FCY - 40 MIPS;
  */
-void PIC_Init_Oscillator_HS_16MHz_FOSC_128MHz_FCY_40MIPS(void)
+void PIC_Init_Oscillator_HS_16MHz_FOSC_80MHz_FCY_40MIPS(void)
 {
     //  Recover on Interrupt bit
     CLKDIVbits.ROI = 0; //              Interrupts have no effect on the DOZEN bit
