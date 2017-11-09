@@ -95,15 +95,8 @@ void PIC_Init_Oscillator_HS_8MHz_FOSC_64MHz_FCY_32MIPS(void)
 
 
 //------------------------------------------------------------------------------
-// Функции для микроконтроллера серии "PIC24E"
-#if defined (__PIC24E__) 
-#endif //   (__PIC24E__)
-//------------------------------------------------------------------------------
-
-
-//------------------------------------------------------------------------------
-// Функции для микроконтроллера серии "dsPIC33E"
-#if defined (__dsPIC33E__)
+// Функции для микроконтроллера серии "dsPIC33E" и "PIC24E"
+#if defined (__dsPIC33E__) || (__PIC24E__)
 
 /**
  *  @brief  Функция конфигурирует тактовый генератор микроконтроллера со следующими
@@ -181,11 +174,9 @@ void PIC_Init_Oscillator_HS_16MHz_FOSC_80MHz_FCY_40MIPS(void)
     //  PLLFBD: PLL Feedback Divisor Register
     PLLFBDbits.PLLDIV = 18; //          PLL Feedback Divisor bits (also denoted as СMТ, PLL multiplier)
 
-    //настройка источника тактирования
-    //__builtin_write_OSCCONH(0x03);
-    //__builtin_write_OSCCONL(0x01);    
-    OSCCONbits.NOSC = 0x03; //выбор источика тактирования - Primary Oscillator (POSC) with PLL (XTPLL, HSPLL, ECPLL)
-    OSCCONbits.OSWEN = 0x1; //задействовать биты NOSC<2:0>
+    //  Настройка источника тактирования
+    OSCCONbits.NOSC = 0x03; //          Выбор источика тактирования - Primary Oscillator (POSC) with PLL (XTPLL, HSPLL, ECPLL)
+    OSCCONbits.OSWEN = 0x1; //          Задействовать биты NOSC<2:0>
 
     // Wait for Clock switch to occur
     while (OSCCONbits.COSC != 0x03);
@@ -225,19 +216,59 @@ void PIC_Init_Oscillator_HS_16MHz_FOSC_128MHz_FCY_64MIPS(void)
     //  PLLFBD: PLL Feedback Divisor Register
     PLLFBDbits.PLLDIV = 62; //          PLL Feedback Divisor bits (also denoted as СMТ, PLL multiplier)
 
-    //настройка источника тактирования
-    //__builtin_write_OSCCONH(0x03);
-    //__builtin_write_OSCCONL(0x01);    
-    OSCCONbits.NOSC = 0x03; //выбор источика тактирования - Primary Oscillator (POSC) with PLL (XTPLL, HSPLL, ECPLL)
-    OSCCONbits.OSWEN = 0x1; //задействовать биты NOSC<2:0>
+    //  Настройка источника тактирования
+    OSCCONbits.NOSC = 0x03; //          Выбор источика тактирования - Primary Oscillator (POSC) with PLL (XTPLL, HSPLL, ECPLL)
+    OSCCONbits.OSWEN = 0x1; //          Задействовать биты NOSC<2:0>
 
-    // Wait for Clock switch to occur
+    //  Wait for Clock switch to occur
     while (OSCCONbits.COSC != 0x03);
 
-    // Wait for PLL to lock
+    //  Wait for PLL to lock
     while (OSCCONbits.LOCK != 1);
 
-    // Disable Watch Dog Timer
+    //  Disable Watch Dog Timer
+    RCONbits.SWDTEN = 0;
+}
+
+/**
+ *  @brief  Функция конфигурирует тактовый генератор микроконтроллера со следующими
+ *          параметрами:
+ *              HS - 16 MHz (внешний кварцевый генератор)
+ *              FVCO - 280 MHz;
+ *		FOSC - 140 MHz;
+ *              FCY - 70 MIPS;
+ */
+void PIC_Init_Oscillator_HS_16MHz_FOSC_140MHz_FCY_70MIPS(void)
+{
+    //  Recover on Interrupt bit
+    CLKDIVbits.ROI = 0; //              Interrupts have no effect on the DOZEN bit
+
+    //  Processor Clock Reduction Select bits
+    CLKDIVbits.DOZE = 0b000; //         FCY divided by 1
+
+    //  Doze Mode Enable bit
+    CLKDIVbits.DOZEN = 0; //            Processor clock and peripheral clock ratio are forced to 1:1
+
+    //  PLL VCO Output Divider Select bits (also denoted as СN2Т, PLL postscaler)
+    CLKDIVbits.PLLPOST = 0b00; //       Output divided by 2
+
+    //  PLL Phase Detector Input Divider Select bits (also denoted as СN1Т, PLL prescaler)
+    CLKDIVbits.PLLPRE = 2; //           Input divided by 4;
+
+    //  PLLFBD: PLL Feedback Divisor Register
+    PLLFBDbits.PLLDIV = 68; //          PLL Feedback Divisor bits (also denoted as СMТ, PLL multiplier)
+
+    //  Настройка источника тактирования
+    OSCCONbits.NOSC = 0x03; //          Выбор источика тактирования - Primary Oscillator (POSC) with PLL (XTPLL, HSPLL, ECPLL)
+    OSCCONbits.OSWEN = 0x1; //          Задействовать биты NOSC<2:0>
+
+    //  Wait for Clock switch to occur
+    while (OSCCONbits.COSC != 0x03);
+
+    //  Wait for PLL to lock
+    while (OSCCONbits.LOCK != 1);
+
+    //  Disable Watch Dog Timer
     RCONbits.SWDTEN = 0;
 }
 
@@ -249,9 +280,9 @@ void PIC_Init_Oscillator_HS_16MHz_FOSC_128MHz_FCY_64MIPS(void)
  *		FOSC - 160 MHz;
  *              FCY - 80 MIPS;
  */
-void PIC_Init_Oscillator_HS_16MHz_FOSC_160MH_FCY_80MIPS (void)
+void PIC_Init_Oscillator_HS_16MHz_FOSC_160MHz_FCY_80MIPS(void)
 {
-       //  Recover on Interrupt bit
+    //  Recover on Interrupt bit
     CLKDIVbits.ROI = 0; //              Interrupts have no effect on the DOZEN bit
 
     //  Processor Clock Reduction Select bits
@@ -269,22 +300,20 @@ void PIC_Init_Oscillator_HS_16MHz_FOSC_160MH_FCY_80MIPS (void)
     //  PLLFBD: PLL Feedback Divisor Register
     PLLFBDbits.PLLDIV = 78; //          PLL Feedback Divisor bits (also denoted as СMТ, PLL multiplier)
 
-    //настройка источника тактирования
-    //__builtin_write_OSCCONH(0x03);
-    //__builtin_write_OSCCONL(0x01);    
-    OSCCONbits.NOSC = 0x03; //выбор источика тактирования - Primary Oscillator (POSC) with PLL (XTPLL, HSPLL, ECPLL)
-    OSCCONbits.OSWEN = 0x1; //задействовать биты NOSC<2:0>
+    //  Настройка источника тактирования
+    OSCCONbits.NOSC = 0x03; //          Выбор источика тактирования - Primary Oscillator (POSC) with PLL (XTPLL, HSPLL, ECPLL)
+    OSCCONbits.OSWEN = 0x1; //          Задействовать биты NOSC<2:0>
 
-    // Wait for Clock switch to occur
+    //  Wait for Clock switch to occur
     while (OSCCONbits.COSC != 0x03);
 
-    // Wait for PLL to lock
+    //  Wait for PLL to lock
     while (OSCCONbits.LOCK != 1);
 
-    // Disable Watch Dog Timer
+    //  Disable Watch Dog Timer
     RCONbits.SWDTEN = 0;
 }
-#endif //   (__dsPIC33E__)
+#endif //   (__dsPIC33E__) || (__PIC24E__)
 //------------------------------------------------------------------------------
 //==============================================================================
 //******************************************************************************
