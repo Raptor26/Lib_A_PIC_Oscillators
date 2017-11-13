@@ -169,10 +169,10 @@ void PIC_Init_Oscillator_HS_16MHz_FOSC_80MHz_FCY_40MIPS(void)
     CLKDIVbits.PLLPOST = 0b00; //       Output divided by 2
 
     //  PLL Phase Detector Input Divider Select bits (also denoted as СN1Т, PLL prescaler)
-    CLKDIVbits.PLLPRE = 0b00000; //     Input divided by 2 (default)
+    CLKDIVbits.PLLPRE = 2; //           Input divided by 4;
 
     //  PLLFBD: PLL Feedback Divisor Register
-    PLLFBDbits.PLLDIV = 18; //          PLL Feedback Divisor bits (also denoted as СMТ, PLL multiplier)
+    PLLFBDbits.PLLDIV = 38; //          PLL Feedback Divisor bits (also denoted as СMТ, PLL multiplier)
 
     //  Настройка источника тактирования
     OSCCONbits.NOSC = 0x03; //          Выбор источика тактирования - Primary Oscillator (POSC) with PLL (XTPLL, HSPLL, ECPLL)
