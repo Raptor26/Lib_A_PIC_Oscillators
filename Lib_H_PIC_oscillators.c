@@ -137,7 +137,13 @@ void PIC_Init_Oscillator_FRC_8MHz_FOSC_128MHz_FCY_64MIPS(void)
     OSCTUNbits.TUN = 23; //             FRC Oscillator Tuning bits
     //                                  Подстройка FRC до 8,0056625 MHz
     //--------------------------------------------------------------------------
+    
+    // Настройка источника тактирования
+    OSCCONbits.NOSC = 0x01; // Выбор источика тактирования - Initial Oscillator Source Selection bits (Internal Fast RC (FRC)) 
+    OSCCONbits.OSWEN = 0x1; // Задействовать биты NOSC<2:0>
 
+    // Wait for Clock switch to occur
+    while (OSCCONbits.COSC != 0x01);
 
     // LOCK: PLL Lock Status bit (read-only)
     while (OSCCONbits.LOCK != 1); //    1 = Indicates that PLL is in lock or PLL start-up timer is satisfied
